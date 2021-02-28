@@ -78,7 +78,7 @@ contract('EthSwap', ([deployer, investor]) => {
         })
     })
 
-    describe('buyTokens()', async () => {
+    describe('sellTokens()', async () => {
         let result
 
         before(async () => {
