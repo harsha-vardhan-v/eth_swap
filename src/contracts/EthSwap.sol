@@ -24,6 +24,9 @@ contract EthSwap{
         //Redemption rate = # of tokens to swap for 1 ether
         //Amount of Ethereum * Redemption Rate
         uint tokenAmount = rate * msg.value;
+
+        //Requires EthSwap has enough tokens for the transaction
+        require(token.balanceOf(address(this)) >= tokenAmount);
         token.transfer(msg.sender, tokenAmount);
 
         //Emit on event
