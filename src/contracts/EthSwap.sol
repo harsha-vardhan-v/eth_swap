@@ -21,6 +21,8 @@ contract EthSwap{
     }
 
     function buyTokens() public payable {
+        //Buys Dapp Tokens for Ether
+
         //Redemption rate = # of tokens to swap for 1 ether
         //Amount of Ethereum * Redemption Rate
         uint tokenAmount = rate * msg.value;
@@ -31,6 +33,16 @@ contract EthSwap{
 
         //Emit on event
         emit TokenPurchased(msg.sender, address(token), tokenAmount, rate);
+    }
+
+    function sellTokens(uint _amount) public {
+        //Sells Ether for our tokens
+
+        //Calculate the amount of ether to redeem for the given dapp tokens
+        uint etherAmount = _amount / rate;
+
+        token.transferFrom(msg.sender, address(this), _amount);
+        msg.sender.transfer(etherAmount);
     }
 }
 
