@@ -9,6 +9,13 @@ contract EthSwap{
     Token public token;
     uint public rate = 100;
 
+    event TokenPurchased(
+        address account,
+        address token,
+        uint amount,
+        uint rate
+    );
+
     constructor(Token _token) public {
         token = _token;
     }
@@ -18,6 +25,9 @@ contract EthSwap{
         //Amount of Ethereum * Redemption Rate
         uint tokenAmount = rate * msg.value;
         token.transfer(msg.sender, tokenAmount);
+
+        //Emit on event
+        emit TokenPurchased(msg.sender, address(token), tokenAmount, rate);
     }
 }
 
