@@ -45,8 +45,13 @@ contract EthSwap{
     function sellTokens(uint _amount) public {
         //Sells Ether for our tokens
 
+        //User can't sell more tokens than they have
+        require(token.balanceOf(msg.sender) >= _amount);
         //Calculate the amount of ether to redeem for the given dapp tokens
         uint etherAmount = _amount / rate;
+
+        //Requires EthSwap to have enough Ether
+        require(address(this).balance >= etherAmount);
 
         token.transferFrom(msg.sender, address(this), _amount);
         msg.sender.transfer(etherAmount);
