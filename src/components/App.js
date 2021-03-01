@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import Web3 from 'web3'
+import Token from '../abis/Token.json'
+import EthSwap from '../abis/EthSwap.json'
+
 import Navbar from './Navbar'
 import './App.css';
 
@@ -15,14 +18,18 @@ class App extends Component {
 
     const accounts = await web3.eth.getAccounts();
 
+    //Getting account address
     this.setState({ account: accounts[0] })
-    console.log(this.state.account);
 
+    //Getting account balance
     const ethBalance = await web3.eth.getBalance(this.state.account)
     this.setState({ ethBalance })
     console.log(this.state.ethBalance)
 
-
+    const abi = Token.abi
+    const address = Token.networks['5777'].address
+    const token = new web3.eth.Contract(abi, address)
+    console.log(token)
   }
 
   async loadWeb3(){
