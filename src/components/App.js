@@ -26,10 +26,22 @@ class App extends Component {
     this.setState({ ethBalance })
     console.log(this.state.ethBalance)
 
-    const abi = Token.abi
-    const address = Token.networks['5777'].address
-    const token = new web3.eth.Contract(abi, address)
-    console.log(token)
+    //Importing web3 version of smart contract Token
+    const networkId = await web3.eth.net.getId()
+    const tokenData = Token.networks[networkId]
+
+    //To check if tokenData is defined
+    if(tokenData){
+      const token = new web3.eth.Contract(Token.abi, tokenData.address)
+      this.setState({token})
+
+      let tokenBalance = await token.methods.balanceOf(this.state.account).call()
+      console.log("tokenBalance", tokenBalance.toString())
+      this.setState({tokenBalance: tokenBalance.toString()})
+    } else{
+      window.alert('Token contract is not deployed in the detected network')
+    }
+
   }
 
   async loadWeb3(){
@@ -51,7 +63,9 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      account: ''
+      account: '',
+      token: {},
+      tokenBalance: 0
     }
   }
 
