@@ -42,6 +42,18 @@ class App extends Component {
       window.alert('Token contract is not deployed in the detected network')
     }
 
+    //Load web3 version of ethSwap smart contract
+    const ethSwapData = EthSwap.networks[networkId]
+
+    //To check if tokenData is defined
+    if (ethSwapData) {
+      const ethSwap = new web3.eth.Contract(EthSwap.abi, ethSwapData.address)
+      this.setState({ ethSwap })
+      console.log(this.state.ethSwap)
+    } else {
+      window.alert('EthSwap contract is not deployed in the detected network')
+    }
+
   }
 
   async loadWeb3(){
@@ -65,6 +77,7 @@ class App extends Component {
     this.state = {
       account: '',
       token: {},
+      ethSwap: {},
       tokenBalance: 0
     }
   }
